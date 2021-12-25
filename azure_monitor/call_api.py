@@ -1,7 +1,7 @@
 import os
-import pprint
 
 from azure.devops.connection import Connection
+from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, WorkItemQueryResult
 from dotenv import load_dotenv
 from msrest.authentication import BasicAuthentication
 
@@ -18,17 +18,12 @@ connection = Connection(base_url=organization_url, creds=credentials)
 
 # Get a client (the "core" client provides access to projects, teams, etc)
 core_client = connection.clients.get_core_client()
+core_client = connection.clients_v6_0.get_core_client()
+wi_client: WorkItemTrackingClient = connection.clients_v6_0.get_work_item_tracking_client()
 
-# Get the first page of projects
-get_projects_response = core_client.get_projects()
-index = 0
-while get_projects_response is not None:
-    for project in get_projects_response.value:
-        pprint.pprint("[" + str(index) + "] " + project.name)
-        index += 1
-    if get_projects_response.continuation_token is not None and get_projects_response.continuation_token != "":
-        # Get the next page of projects
-        get_projects_response = core_client.get_projects(continuation_token=get_projects_response.continuation_token)
-    else:
-        # All projects have been retrieved
-        get_projects_response = None
+# Get all work items where a type is issue
+query = "Select * From WorkItems Where [System.WorkItemType] = 'Issue'"
+wiql = Wiql(query)
+test: WorkItemQueryResult = wi_client.query_by_wiql(wiql)
+for i in test.work_items:
+    print(i)
