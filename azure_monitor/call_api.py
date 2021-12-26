@@ -1,7 +1,9 @@
+import json
 import os
 
 from azure.devops.connection import Connection
 from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, WorkItemQueryResult
+from azure.devops.v6_0.work_item_tracking.models import WorkItem
 from dotenv import load_dotenv
 from msrest.authentication import BasicAuthentication
 
@@ -24,6 +26,8 @@ wi_client: WorkItemTrackingClient = connection.clients_v6_0.get_work_item_tracki
 # Get all work items where a type is issue
 query = "Select * From WorkItems Where [System.WorkItemType] = 'Issue'"
 wiql = Wiql(query)
-test: WorkItemQueryResult = wi_client.query_by_wiql(wiql)
-for i in test.work_items:
-    print(i)
+result: WorkItemQueryResult = wi_client.query_by_wiql(wiql)
+for i in result.work_items:
+    detail: WorkItem = wi_client.get_work_item(237, expand="Relations")
+    print(json.dumps(detail.as_dict(), indent=2))
+    break
