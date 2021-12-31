@@ -4,7 +4,9 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from azure_monitor.models.domain.issue import Issue
+from azure_monitor.db.db import Base
+from azure_monitor.models.issue import Issue
+from azure_monitor.models.task import Task
 
 
 # this is the Alembic Config object, which provides
@@ -20,7 +22,7 @@ if config.config_file_name:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Issue.metadata
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

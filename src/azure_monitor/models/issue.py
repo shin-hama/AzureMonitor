@@ -1,4 +1,5 @@
 import sqlalchemy as sa
+from sqlalchemy.orm import relationship
 
 from azure_monitor.db.db import Base
 
@@ -8,3 +9,5 @@ class Issue(Base):
 
     id = sa.Column(sa.Integer, primary_key=True, index=True)
     ticket = sa.Column(sa.Integer, unique=True)
+
+    tasks = relationship("Task", back_populates="owner")
