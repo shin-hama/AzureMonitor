@@ -3,13 +3,13 @@ from pathlib import Path
 
 from azure.devops.connection import Connection
 from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, WorkItemQueryResult
-from azure.devops.v6_0.work_item_tracking.models import WorkItem, WorkItemReference
+from azure.devops.v6_0.work_item_tracking.models import WorkItem, WorkItemReference, WorkItemRelation
 from dotenv import load_dotenv
 from msrest.authentication import BasicAuthentication
 
 from azure_monitor.models.issue import Issue
 from azure_monitor.models.task import Task
-from azure_monitor.db.queries.issues import create_issue
+from azure_monitor.db.queries.issues import create_issue, get_issue, update_issue
 from azure_monitor.db.utils import get_db
 
 
@@ -19,6 +19,13 @@ def perse_id_from_work_item_url(url: str):
         return int(id)
     except Exception:
         return
+
+
+def get_child_id_from_relation(item: WorkItemRelation):
+    if item.attributes.get("name") == "Child":
+        return perse_id_from_work_item_url(item.url)
+    else:
+        return None
 
 
 load_dotenv()
@@ -51,13 +58,23 @@ for item in result.work_items:
     # register all issues
     detail = get_work_item(item.id, expand="Relations")
     issue = Issue(id=detail.id, title=detail.fields["System.Title"])
+    if detail.relations:
+        child_task_ids: list[int] = [get_child_id_from_relation(task) for task in detail.relations]
+        children: list[Task] = []
+        for child in child_task_ids:
+            if child is None:
+                continue
+            child_item = get_work_item(child)
+            task = Task(id=child_item.id, title=child_item.fields["System.Title"])
+            children.append(task)
+
+        issue.tasks = children
+
     with get_db() as session:
         try:
-            create_issue(session, issue)
+            if get_issue(session, issue.id) is None:
+                create_issue(session, issue)
+            else:
+                update_issue(session, issue)
         except:
-            pass
-
-    # child_task_ids: list[int] = [perse_id_from_work_item_url(task.url) for task in detail.relations]
-    # for child in child_task_ids:
-    #     child_item = get_work_item(child)
-    #     print(child_item.fields["System.Title"])
+            session.rollback()
