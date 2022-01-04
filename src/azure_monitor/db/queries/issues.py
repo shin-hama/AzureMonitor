@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 
-from azure_monitor.models.issue import Issue
+from azure_monitor.models.models import Issue
 
 
 def get_issues(db: Session, skip: int = 0, limit: int = 100) -> list[Issue]:

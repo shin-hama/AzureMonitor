@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from azure_monitor.models.task import Task
+from azure_monitor.models.models import Task
 
 
 def get_tasks(db: Session, skip: int = 0, limit: int = 100) -> list[Task]:

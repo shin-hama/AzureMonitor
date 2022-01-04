@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import Session
 from azure_monitor.azure.work_items import generate_issues
 from azure_monitor.db.queries.issues import create_issue, get_issue, update_issue
 from azure_monitor.db.utils import get_db
-from azure_monitor.models.issue import Issue
+from azure_monitor.models.models import Issue
 
 
 def process_db(callback: Callable[[Session], Optional[Issue]]):

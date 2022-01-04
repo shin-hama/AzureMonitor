@@ -4,9 +4,7 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from azure_monitor.db.db import Base
-from azure_monitor.models.issue import Issue
-from azure_monitor.models.task import Task
+from azure_monitor.models.models import Base
 
 
 # this is the Alembic Config object, which provides

@@ -6,8 +6,7 @@ from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, W
 from azure.devops.v6_0.work_item_tracking.models import WorkItem, WorkItemReference, WorkItemRelation
 
 from .utils import create_connection
-from azure_monitor.models.issue import Issue
-from azure_monitor.models.task import Task
+from azure_monitor.models.models import Issue, Task
 
 
 def parse_id_from_work_item_url(url: str):

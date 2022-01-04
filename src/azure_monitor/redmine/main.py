@@ -1,7 +1,6 @@
 from azure_monitor.db.queries.issues import get_issues
 from azure_monitor.db.utils import get_db
-from azure_monitor.models.issue import Issue
-from azure_monitor.models.task import Task
+from azure_monitor.models.models import Issue
 
 
 def register_ticket():
