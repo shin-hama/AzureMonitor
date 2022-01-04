@@ -5,11 +5,9 @@ from azure.devops.connection import Connection
 from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, WorkItemQueryResult
 from azure.devops.v6_0.work_item_tracking.models import WorkItem, WorkItemReference, WorkItemRelation
 
-from utils import create_connection
+from .utils import create_connection
 from azure_monitor.models.issue import Issue
 from azure_monitor.models.task import Task
-from azure_monitor.db.queries.issues import create_issue, get_issue, update_issue
-from azure_monitor.db.utils import get_db
 
 
 def parse_id_from_work_item_url(url: str):
@@ -94,15 +92,3 @@ def generate_issues() -> Iterator[Issue]:
             issue.tasks = children
 
         yield issue
-
-
-def main():
-    for issue in generate_issues():
-        with get_db() as session:
-            try:
-                if get_issue(session, issue.id) is None:
-                    create_issue(session, issue)
-                else:
-                    update_issue(session, issue)
-            except Exception:
-                session.rollback()
