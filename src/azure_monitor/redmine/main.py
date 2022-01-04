@@ -22,6 +22,7 @@ def build_ticket(issue: Issue):
     return ticket
 
 
-with get_db() as session:
-    for i in get_issues(session):
-        print(build_ticket(i))
+if __name__ == "__main__":
+    with get_db() as session:
+        for i in get_issues(session):
+            print(build_ticket(i))
