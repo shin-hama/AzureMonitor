@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 
 from sqlalchemy.orm.session import Session
-from azure_monitor.azure.work_items import generate_issues
+from azure_monitor.azure_devops.work_items import generate_issues
 from azure_monitor.db.queries.issues import create_issue, get_issue, update_issue
 from azure_monitor.db.utils import get_db
 from azure_monitor.models.models import Issue
@@ -45,3 +45,7 @@ def main():
             _create_issue(issue)
         else:
             _update_issue(issue)
+
+
+if __name__ == "__main__":
+    main()

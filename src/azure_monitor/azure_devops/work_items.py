@@ -77,7 +77,7 @@ def generate_issues() -> Iterator[Issue]:
         detail = wi_client.get_work_item(item.id, expand="Relations")
         issue = WorkItemParser.build_issue(detail)
 
-        if len(detail.relations) > 0:
+        if detail.relations is not None and len(detail.relations) > 0:
             # If issue has child task, get detail of tasks.
             child_task_ids = WorkItemParser.parse_child(detail.relations)
 
