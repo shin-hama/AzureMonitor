@@ -6,6 +6,7 @@ from typing import Iterator
 from azure.devops.connection import Connection
 from azure.devops.v6_0.work_item_tracking import WorkItemTrackingClient, Wiql, WorkItemQueryResult
 from azure.devops.v6_0.work_item_tracking.models import WorkItem, WorkItemReference, WorkItemRelation
+import pytz
 
 from .utils import create_connection
 from azure_monitor.models.models import Issue, Task
@@ -21,7 +22,7 @@ def parse_id_from_work_item_url(url: str):
 
 def parse_datetime(timestamp: str) -> datetime:
     result = re.sub(r"\.[0-9]+", "", timestamp)
-    return datetime.fromisoformat(result.replace("Z", "+00:00"))
+    return datetime.fromisoformat(result.replace("Z", "+00:00")).astimezone(pytz.timezone("UTC"))
 
 
 def checkIsChild(item: WorkItemRelation) -> bool:
