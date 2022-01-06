@@ -381,6 +381,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 requests = ">=2.23.0"
 
 [[package]]
+name = "pytz"
+version = "2021.3"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "requests"
 version = "2.26.0"
 description = "Python HTTP for Humans."
@@ -493,7 +501,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ce8d28abb6fba5fbd73e9be32758dc7e27cd7f05c9c53c4366b0da3e48d5530d"
+content-hash = "ce005ab600712afce12ff6858fde777a107ff5a12b4cfd41239c44a52696d979"
 
 [metadata.files]
 alembic = [
@@ -765,6 +773,10 @@ python-dotenv = [
 python-redmine = [
     {file = "python-redmine-2.3.0.tar.gz", hash = "sha256:96889d1ae59b5830337e2c2fff1e2ce54103e52bbb632bd7c648f7d2d0274d25"},
     {file = "python_redmine-2.3.0-py2.py3-none-any.whl", hash = "sha256:502680473a3f9b7a001f788969c62081023afa83d896c0a54963aed3cf198b89"},
+]
+pytz = [
+    {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},
+    {file = "pytz-2021.3.tar.gz", hash = "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"},
 ]
 requests = [
     {file = "requests-2.26.0-py2.py3-none-any.whl", hash = "sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24"},

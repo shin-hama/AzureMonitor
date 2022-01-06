@@ -1,11 +1,17 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy.sql import func
 
 from azure_monitor.db.db import Base
 
 
-class Issue(Base):
+class BaseModel:
+    created = sa.Column(sa.DateTime, nullable=False)
+    updated = sa.Column(sa.DateTime, nullable=False)
+
+
+class Issue(Base, BaseModel):
     __tablename__ = "issues"
 
     id = sa.Column(sa.Integer, primary_key=True, index=True)
@@ -15,7 +21,7 @@ class Issue(Base):
     tasks = relationship("Task", back_populates="owner")
 
 
-class Task(Base):
+class Task(Base, BaseModel):
     __tablename__ = "tasks"
 
     id = sa.Column(sa.Integer, primary_key=True)

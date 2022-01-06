@@ -39,12 +39,18 @@ def _update_issue(issue: Issue):
 
 
 def main():
+    import pytz
+
+    utc = pytz.UTC
+
     for issue in generate_issues():
-        issue = _get_issue(issue.id)
-        if issue is None:
+        issue_db = _get_issue(issue.id)
+        if issue_db is None:
             _create_issue(issue)
         else:
-            _update_issue(issue)
+            if issue.updated > utc.localize(issue_db.updated):
+                print("update")
+                _update_issue(issue)
 
 
 if __name__ == "__main__":

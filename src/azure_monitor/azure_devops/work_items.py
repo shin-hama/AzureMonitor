@@ -1,4 +1,6 @@
+from datetime import datetime
 from pathlib import Path
+import re
 from typing import Iterator
 
 from azure.devops.connection import Connection
@@ -15,6 +17,11 @@ def parse_id_from_work_item_url(url: str):
         return int(id)
     except Exception:
         return None
+
+
+def parse_datetime(timestamp: str) -> datetime:
+    result = re.sub(r"\.[0-9]+", "", timestamp)
+    return datetime.fromisoformat(result.replace("Z", "+00:00"))
 
 
 def checkIsChild(item: WorkItemRelation) -> bool:
@@ -44,12 +51,22 @@ class WorkItemParser:
 
     @staticmethod
     def build_issue(item: WorkItem):
-        issue = Issue(id=item.id, title=item.fields.get("System.Title"))
+        issue = Issue(
+            id=item.id,
+            title=item.fields.get("System.Title"),
+            created=parse_datetime(item.fields.get("System.CreatedDate")),
+            updated=parse_datetime(item.fields.get("System.ChangedDate")),
+        )
         return issue
 
     @staticmethod
     def build_task(item: WorkItem):
-        task = Task(id=item.id, title=item.fields.get("System.Title"))
+        task = Task(
+            id=item.id,
+            title=item.fields.get("System.Title"),
+            created=parse_datetime(item.fields.get("System.CreatedDate")),
+            updated=parse_datetime(item.fields.get("System.ChangedDate")),
+        )
         return task
 
     @staticmethod
