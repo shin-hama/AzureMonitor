@@ -1,4 +1,4 @@
-from logging import getLogger, DEBUG, StreamHandler
+from logging import getLogger
 from typing import Any, Union
 
 from redminelib import Redmine, resources
@@ -11,9 +11,6 @@ from azure_monitor.utils import proxy
 
 
 logger = getLogger(__name__)
-logger.setLevel(DEBUG)
-sh = StreamHandler()
-logger.addHandler(sh)
 
 
 class RedmineClinet:

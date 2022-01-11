@@ -1,9 +1,12 @@
 import os
 from dotenv import load_dotenv
+from distutils.util import strtobool
 
 
 load_dotenv()
 
+
+DEBUG = strtobool(os.environ.get("DEBUG", "false"))
 
 # Fill in with your personal access token and org URL
 AZURE_DEVOPS_PAT = os.environ.get("AZURE_PAT", "")
